@@ -13,6 +13,7 @@ return [
     |
     */
 
+    // 'guard' => 'user',
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
@@ -39,6 +40,18 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'user' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admins',
+        ],
+        'master' => [
+            'driver' => 'jwt',
+            'provider' => 'masters',
         ],
     ],
 

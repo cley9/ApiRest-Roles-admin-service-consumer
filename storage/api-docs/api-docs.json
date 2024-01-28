@@ -1,0 +1,43 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Loguin para user y admin",
+        "description": "logueo de user y admin",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000"
+        }
+    ],
+    "paths": {
+        "/token": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtener token CSRF",
+                "description": "Obtiene un token CSRF para la autenticación",
+                "operationId": "742ec0d98a0b2c9fb6b20fc1e3fdf784",
+                "responses": {
+                    "200": {
+                        "description": "Token CSRF generado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJpdiI6IlwvXC9Icl..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

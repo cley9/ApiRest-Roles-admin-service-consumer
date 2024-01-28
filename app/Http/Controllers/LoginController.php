@@ -18,9 +18,18 @@ use Str;
 use Illuminate\Support\Facades\Mail;
 
 
-
+// /**
+// * @OA\Info(
+// *             title="Loguin para user y admin", 
+// *             version="1.0",
+// *             description="logueo de user y admin"
+// * )
+// *
+// * @OA\Server(url="http://127.0.0.1:8000")
+// */
 class LoginController extends Controller
 {
+    
         function createUser(Request $request)
         {
             $request->validate([
@@ -36,8 +45,11 @@ class LoginController extends Controller
                 $user->avatar = '/storage/img/icons/userLogin.png';
                 $user->external_auth = 'local';
                 $user->save();
-                 $token = JWTAuth::setToken(null)->guard('user')->fromUser($user);
-  
+               $token=JWTAuth::fromUser($user);
+            // $userToken = JWTAuth::guard('user')->fromUser($user);
+            // $token = JWTAuth::setToken(null)->guard('user')->fromUser($user);
+            // $userToken = JWTAuth::guard('user')->fromUser($user);
+
                  return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario creado","token"=>$token,"user"=>$user],Response::HTTP_OK);
               try {
                   // return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario creado","data"=>$user, $token]);
