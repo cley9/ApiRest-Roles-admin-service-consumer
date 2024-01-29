@@ -47,11 +47,11 @@ return [
         ],
         'admin' => [
             'driver' => 'jwt',
-            'provider' => 'admins',
+            'provider' => 'users',
         ],
         'master' => [
             'driver' => 'jwt',
-            'provider' => 'masters',
+            'provider' => 'users',
         ],
     ],
 

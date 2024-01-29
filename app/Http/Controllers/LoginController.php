@@ -13,7 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Cookie;
 // use Tymon\JWTAuth\Contracts\Providers\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
+// use JWTAuth;
 use Str;
 use Illuminate\Support\Facades\Mail;
 
@@ -46,10 +46,14 @@ class LoginController extends Controller
                 $user->external_auth = 'local';
                 $user->save();
                $token=JWTAuth::fromUser($user);
-            // $userToken = JWTAuth::guard('user')->fromUser($user);
+            // $token=auth()->guard('user')->attempt($user);    
+            // $token=auth('user')->attempt($user);    
+            // $token =$user->createToken('UserTolen')->accessToken;
+            // $token = JWTAuth::guard('user')->fromUser($user);
+            
             // $token = JWTAuth::setToken(null)->guard('user')->fromUser($user);
             // $userToken = JWTAuth::guard('user')->fromUser($user);
-
+            // return response()->json(['token' => $token]);
                  return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario creado","token"=>$token,"user"=>$user],Response::HTTP_OK);
               try {
                   // return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario creado","data"=>$user, $token]);
@@ -96,7 +100,7 @@ class LoginController extends Controller
       }
    
       function loginLocalUser(Request $request){
-          // try {
+        //   // try {
                $request->validate([
                   'email' => 'required|email|max:105',
                   'password'=> 'required|max:105',
@@ -108,23 +112,25 @@ class LoginController extends Controller
                   'email' => $email,
                   'password' => $request->password
               ];
-              $validate = User::where('email', $email)->where('rol', '0')->exists();
-              // if ($token=Auth::attempt($credencials) && $validate) {
-                  if (($token=JWTAuth::attempt($credencials))&& $validate) {
-                      // if ($token=JWTAuth::attempt($credencials) && $validate) {
-                  // session(['name'=>'Usuario']);
-                  session(['email' => $email]);
-                  session(['rol' => '0']);
-                  $userId = User::where('email', session()->get('email'))->where('email', session()->get('email'))->get();
-                  // session(['avatar' => $userId[0]->avatar]);
-                  session(['avatar' => $img = '/storage/img/icons/userLogin.png']);
-                  session(['userId' => $userId[0]->id]);
-                  session(['name' => $userId[0]->name]);
-                  // return response(["user"=> $userId,"status"=>Response::HTTP_OK]);
-                  // --cookie 
-                  $cookie= cookie('cookie_token_agru',$token,(60*24)*7);
-  
-                 return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario valido","token"=>$token,"user"=>$userId],Response::HTTP_OK)->withoutCookie($cookie);
+              
+              //   $validate = User::where('email', $email)->where('rol', '0')->exists();
+              if ($token=JWTAuth::attempt($credencials)) {
+                //   if (($token=JWTAuth::attempt($credencials))&& $validate) {
+                            // $token = JWTAuth::parseToken()->authenticate();
+                            // return Response()->json(["token"=> $token ]);
+                //       // if ($token=JWTAuth::attempt($credencials) && $validate) {
+                //   // session(['name'=>'Usuario']);
+                //   session(['email' => $email]);
+                //   session(['rol' => '0']);
+                //   $userId = User::where('email', session()->get('email'))->where('email', session()->get('email'))->get();
+                //   // session(['avatar' => $userId[0]->avatar]);
+                //   session(['avatar' => $img = '/storage/img/icons/userLogin.png']);
+                //   session(['userId' => $userId[0]->id]);
+                //   session(['name' => $userId[0]->name]);
+                //   // --cookie 
+                //   $cookie= cookie('cookie_token_agru',$token,(60*24)*7);
+                    return response()->json(["user "=>"usuario valido ","token"=>compact('token')]);
+                //  return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario valido","token"=>$token,"user"=>$userId],Response::HTTP_OK)->withoutCookie($cookie);
               //    return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario valido","token"=>$token,"user"=>$userId],Response::HTTP_OK);
               } else {
                   return response()->json(["status"=>Response::HTTP_UNAUTHORIZED,'message' => 'Usuario invalido o contraseña no valida'],Response::HTTP_UNAUTHORIZED);
@@ -135,7 +141,11 @@ class LoginController extends Controller
           //     // return response()->json(['status' => 'error', 'code' => '500', 'messange'=>'Problemas con el servidor']);
           // }
       }
-  
+      function viewToken(){
+        //   $token = JWTAuth::parseToken()->authenticate();
+        //   return $token;
+     return "cley";   
+    }
       function loginGoogle()
       {
           return Socialite::driver('google')->redirect();

@@ -43,6 +43,15 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+        'apiAdmin' => [
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+        'apiService' => [
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+        'apiConsumer' => [
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
     ];
 
     /**
@@ -64,5 +73,9 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'jwt.apiRest.tonarum' => \App\Http\Middleware\JwtApiRestTonarum::class,
+        'jwt.user.consumer' => \App\Http\Middleware\JwtUserConsumer::class,
+        'jwt.user.service' => \App\Http\Middleware\JwtUserService::class,
+        'jwt.user.admin' => \App\Http\Middleware\JwtAdmin::class,
     ];
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ViewController;
+// use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +28,13 @@ Route::post('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginA
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout.user.index');
 Route::post('/createUser', [LoginController::class, 'createUser'])->name('create.user.index');
 Route::get('/validarUser/{email}', [LoginController::class, 'validarUser'])->name('validar.user.index');
+// Route::post('/loginLocalUser', [LoginController::class, 'loginLocalUser'])->name('loginLocalUser.user.index');
 Route::post('/loginLocalUser', [LoginController::class, 'loginLocalUser'])->name('loginLocalUser.user.index');
 Route::get('user', [LoginController::class, 'indexHome'])->name('loginUser.proceso.index');
+// Route::get('/viewTokenUser', [LoginController::class, 'viewToken'])->name('aloginUser.proceso.index');
+
+Route::group(['prefix'=>'cley','middleware'=>['jwt.user.consume','jwt.user.service']],function () {
+    // Route::middleware(['jwt.user.consume'])->group(function () {
+Route::get('/viewTokenUser', [LoginController::class, 'viewToken'])->name('aloginUser.proceso.index');
+    
+});

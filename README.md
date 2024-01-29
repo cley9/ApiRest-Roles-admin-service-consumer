@@ -6,5 +6,6 @@ this is codig of tonarum
 ```
 
 ## PENDIENTE
-- crear las apis admin y user =>[user services, user consumer] 
-- customing jwp token
+- crear las apis admin y user =>[user services, user consumer, user admin] [y] 
+- customing jwp token [y]
+
