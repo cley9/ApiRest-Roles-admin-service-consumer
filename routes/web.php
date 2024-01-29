@@ -32,9 +32,18 @@ Route::get('/validarUser/{email}', [LoginController::class, 'validarUser'])->nam
 Route::post('/loginLocalUser', [LoginController::class, 'loginLocalUser'])->name('loginLocalUser.user.index');
 Route::get('user', [LoginController::class, 'indexHome'])->name('loginUser.proceso.index');
 // Route::get('/viewTokenUser', [LoginController::class, 'viewToken'])->name('aloginUser.proceso.index');
+// login for user consumer, service
+// /api/v1/
+// Route::prefix(){
 
-Route::group(['prefix'=>'cley','middleware'=>['jwt.user.consume','jwt.user.service']],function () {
-    // Route::middleware(['jwt.user.consume'])->group(function () {
-Route::get('/viewTokenUser', [LoginController::class, 'viewToken'])->name('aloginUser.proceso.index');
+// }
+Route::post('/login', [LoginController::class, 'loginLocalUser'])->name('login.user.api');
+// Route::group()
+// Route::prefix('/api/v1/')->group(function () {
+    // Route::group(['prefix'=>'/api/v1/'],function () {
+    // Route::get('/cley', function () {
+    //     return "hi cley";
+    // });
     
-});
+// });
+

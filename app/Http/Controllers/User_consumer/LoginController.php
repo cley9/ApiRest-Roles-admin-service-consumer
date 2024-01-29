@@ -14,45 +14,52 @@ class LoginController extends Controller
     function createUser(Request $request)
     {
         $request->validate([
-              'name'=> 'required|max:105',
-            'email'=> 'required|email|unique:users|max:105',
-             'password'=> 'required|confirmed|max:105',
+            'name' => 'required|max:105',
+            'email' => 'required|email|unique:users|max:105',
+            'password' => 'required|confirmed|max:105',
         ]);
-            $user = new User();
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->rol = '0';
-            $user->avatar = '/storage/img/icons/userLogin.png';
-            $user->external_auth = 'local';
-            $user->save();
-           $token=JWTAuth::fromUser($user);
-             return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario consumer creado","token"=>$token,"user"=>$user],Response::HTTP_OK);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->rol = '0';
+        $user->avatar = '/storage/img/icons/userLogin.png';
+        $user->external_auth = 'local';
+        $user->save();
+        $token = JWTAuth::fromUser($user);
+        $data = [
+            "name" => $user['name'],
+            "email" => $user['email'],
+            "avatar" => $user['avatar'],
+        ];
+        return response()->json(["status" => Response::HTTP_OK, "message" => "Usuario consumer service creado", "token" => $token, "user" => $data], Response::HTTP_OK);
     }
-     
-    function loginLocalUser(Request $request){
-               $request->validate([
-                  'email' => 'required|email|max:105',
-                  'password'=> 'required|max:105',
-                ]);
-              $credencials = [
-                  'email' => $request->email,
-                  'password' => $request->password
-              ];
-              $validate = User::where('email', $request->email)->where('rol', '0')->exists();
-       if (($token=JWTAuth::attempt($credencials)) && $validate) {
-                 return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario consumer valido","token"=>$token],Response::HTTP_OK);
-              } else {
-                  return response()->json(["status"=>Response::HTTP_UNAUTHORIZED,'message' => 'Usuario invalido o contraseña no valida'],Response::HTTP_UNAUTHORIZED);
-              }
-       
-      }
-      function perfil(){
-        return response()->json(["status"=>Response::HTTP_OK, "message"=>"Bien venido a tu perfil consumer"],Response::HTTP_OK);
+
+    // function loginLocalUser(Request $request){
+    //            $request->validate([
+    //               'email' => 'required|email|max:105',
+    //               'password'=> 'required|max:105',
+    //             ]);
+    //           $credencials = [
+    //               'email' => $request->email,
+    //               'password' => $request->password
+    //           ];
+    //           $validate = User::where('email', $request->email)->where('rol', '0')->exists();
+    //    if (($token=JWTAuth::attempt($credencials)) && $validate) {
+    //              return response()->json(["status"=>Response::HTTP_OK, "message"=>"Usuario consumer valido","token"=>$token],Response::HTTP_OK);
+    //           } else {
+    //               return response()->json(["status"=>Response::HTTP_UNAUTHORIZED,'message' => 'Usuario invalido o contraseña no valida'],Response::HTTP_UNAUTHORIZED);
+    //           }
+
+    //   }
+    function perfil()
+    {
+        return response()->json(["status" => Response::HTTP_OK, "message" => "Bien venido a tu perfil consumer"], Response::HTTP_OK);
     }
-    function viewToken(){
-          $token = JWTAuth::parseToken()->authenticate();
-          return $token;
-    //  return "cley";   
+    function viewToken()
+    {
+        $token = JWTAuth::parseToken()->authenticate();
+        return $token;
+        //  return "cley";   
     }
 }
